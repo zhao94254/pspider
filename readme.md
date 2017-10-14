@@ -16,5 +16,9 @@
 
 
 
+使用基于flask 的 eve 能够很方便的将mongodb的数据转化为一个restful接口，
+这里简单演示一下。  
+ 
+Mongodb --> Eve --> Restful  
 
-
+Eve 这里将很多重复操作抽象起来了，不用手动进行格式转化等重复性强的操作。
