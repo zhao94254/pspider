@@ -39,7 +39,6 @@ async def insert(data):
     else:
         await collection.insert(data)
 
-
 def get_page_url(baseurl, endpoint, start, end):
     # 根据baseurl获取要获取的url
 

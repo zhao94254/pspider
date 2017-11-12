@@ -5,7 +5,9 @@ from base import get_games, get_room
 from struct import pack
 import re
 import json
-import socket
+# import socket
+from curio import socket, TaskGroup
+import curio
 
 max_online = 50000
 max_room = 20
@@ -27,6 +29,14 @@ def push(data):
     s += data.encode('ascii') + b'\x00'
     return s
 
+async def preconn(addr, room_id):
+    """ 应该是 建立一个链接 --》 preconn 多个房间 —》获取弹幕 """
+    connect = await socket.create_connection(addr)
+    pushdata = push('type@=loginreq/roomid@={}/'.format(room_id))
+    await connect.sendall(pushdata)
+    pre_recv = await connect.recv(9999)
+    return connect
+
 def parse(data):
     """ 解析数据"""
     msg = re.findall(b'(type@=.*?)\x00', data)
@@ -41,29 +51,48 @@ def parse(data):
             return msg
     return ''
 
-
-def start():
-    addr = ('openbarrage.douyutv.com', 8601)
-    roomid = get_rooms()[0]
-    print(roomid)
-    connect = socket.create_connection(addr)
-
-    pushdata = push('type@=loginreq/roomid@={}/'.format(roomid))
-    data = push('type@=joingroup/rid@={}/gid@=-9999/'.format(roomid))
-
-    connect.sendall(pushdata)
-    recv1 = connect.recv(9999)
-    # print(recv1)
-
-    connect.sendall(data)
+async def get_danmu(addr, room_id):
+    connect = await preconn(addr, room_id)
+    data = push('type@=joingroup/rid@={}/gid@=-9999/'.format(room_id))
+    await connect.sendall(data)
     while True:
-        recv2 = connect.recv(9999)
-        if not recv2:
+        recv_danmu = await connect.recv(9999)
+        if not recv_danmu:
             break
-        print(parse(recv2))
+        # save -->
+        print(parse(recv_danmu))
+
+async def main(addr, room_ids):
+    async with TaskGroup() as g:
+        for i in room_ids:
+            await g.spawn(get_danmu(addr, i))
 
 if __name__ == '__main__':
-    start()
+    rooms = get_rooms()
+    addr = ('openbarrage.douyutv.com', 8601)
+    curio.run(main(addr, rooms))
+
+
+# def start():
+#     addr = ('openbarrage.douyutv.com', 8601)
+#     roomid = get_rooms()[0]
+#     print(roomid)
+#     connect = socket.create_connection(addr)
+#
+#     pushdata = push('type@=loginreq/roomid@={}/'.format(roomid))
+#     data = push('type@=joingroup/rid@={}/gid@=-9999/'.format(roomid))
+#
+#     connect.sendall(pushdata)
+#     recv1 = connect.recv(9999)
+#     print(recv1)
+#
+#     connect.sendall(data)
+#     while True:
+#         recv2 = connect.recv(9999)
+#         if not recv2:
+#             break
+#         print(parse(recv2))
+
 
 
 
