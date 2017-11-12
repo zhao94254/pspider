@@ -8,9 +8,30 @@ import json
 # import socket
 from curio import socket, TaskGroup
 import curio
+from motor.motor_asyncio import AsyncIOMotorClient
+import time
+
 
 max_online = 50000
 max_room = 20
+
+times = 0
+keeplive = time.time()
+tmp = []
+
+def init_db():
+    client = AsyncIOMotorClient('mongodb://localhost:27017')
+    db = client.crawl
+    danmu = db.danmu
+    return danmu
+
+collection = init_db()
+
+async def insert_danmu(data):
+    data = [i for i in data if i]
+    collection.insert_many(data)
+    print(data)
+    # await curio.sleep(0.1)
 
 def get_rooms():
     """ 获取主播的房间id"""
@@ -47,8 +68,15 @@ def parse(data):
         msg = json.loads((b'{"' + msg[:-2] + b'}').decode('utf8', 'ignore'))
         if msg.get('type', '') == 'chatmsg': # 弹幕信息 进入房间信息 礼物信息
             # print(msg)
-        # return msg.get('nn', ''), msg.get('rid', '')
-            return msg
+            # return msg.get('nn', ''), msg.get('rid', '')
+            res = {
+                'rid': msg.get('rid', '1'),
+                'nickname': msg.get('nn', ''),
+                'level': msg.get('level', '1'),
+                'danmu': msg.get('txt', ''),
+                'uid': msg.get('uid', '1')
+            }
+            return res
     return ''
 
 async def get_danmu(addr, room_id):
@@ -59,8 +87,17 @@ async def get_danmu(addr, room_id):
         recv_danmu = await connect.recv(9999)
         if not recv_danmu:
             break
+        # 保持链接。
+        global times, keeplive, tmp
+        if time.time() - keeplive > 25:
+            data = push('type@=keeplive/tick@=%s/' % int(time.time()))
+            keeplive = time.time()
         # save -->
-        print(parse(recv_danmu))
+        tmp.append(parse(recv_danmu))
+        if len(tmp) == 100:
+            await insert_danmu(tmp)
+            tmp = []
+            # save
 
 async def main(addr, room_ids):
     async with TaskGroup() as g:
