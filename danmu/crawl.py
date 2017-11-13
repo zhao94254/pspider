@@ -10,11 +10,12 @@ from curio import socket, TaskGroup
 import curio
 from motor.motor_asyncio import AsyncIOMotorClient
 import time
-
+from json import JSONDecodeError
+from restart import run_with_restart
 
 max_online = 50000
 max_room = 20
-
+debug = False
 times = 0
 keeplive = time.time()
 tmp = []
@@ -28,10 +29,13 @@ def init_db():
 collection = init_db()
 
 async def insert_danmu(data):
-    data = [i for i in data if i]
-    collection.insert_many(data)
-    print(data)
-    # await curio.sleep(0.1)
+    if debug:
+        print('call', data)
+        await curio.sleep(0.1)
+    else:
+        data = [i for i in data if i]
+        collection.insert_many(data)
+
 
 def get_rooms():
     """ 获取主播的房间id"""
@@ -65,7 +69,10 @@ def parse(data):
         msg = msg[0]
         msg = msg.replace(b'@=', b'":"').replace(b'/', b'","')
         msg = msg.replace(b'@A', b'@').replace(b'@S', b'/')
-        msg = json.loads((b'{"' + msg[:-2] + b'}').decode('utf8', 'ignore'))
+        try:
+            msg = json.loads((b'{"' + msg[:-2] + b'}').decode('utf8', 'ignore'))
+        except JSONDecodeError:
+            print(msg)
         if msg.get('type', '') == 'chatmsg': # 弹幕信息 进入房间信息 礼物信息
             # print(msg)
             # return msg.get('nn', ''), msg.get('rid', '')
@@ -92,6 +99,7 @@ async def get_danmu(addr, room_id):
         if time.time() - keeplive > 25:
             data = push('type@=keeplive/tick@=%s/' % int(time.time()))
             keeplive = time.time()
+            await connect.sendall(data)
         # save -->
         tmp.append(parse(recv_danmu))
         if len(tmp) == 100:
@@ -104,10 +112,13 @@ async def main(addr, room_ids):
         for i in room_ids:
             await g.spawn(get_danmu(addr, i))
 
-if __name__ == '__main__':
+def start():
     rooms = get_rooms()
     addr = ('openbarrage.douyutv.com', 8601)
     curio.run(main(addr, rooms))
+
+if __name__ == '__main__':
+    run_with_restart(start, stime=time.time(), retime=1200, )
 
 
 # def start():
