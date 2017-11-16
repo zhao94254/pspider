@@ -6,8 +6,6 @@ import requests
 import redis
 import curio
 
-max_online = 50000
-min_online = 10000
 
 r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
@@ -28,18 +26,22 @@ def get_games():
 def get_room(games, max_online):
     room_info = {}
     for i in games:
-        gamelink = 'http://api.douyutv.com/api/v1/live/{}'.format(i)
+        gamelink = 'http://api.douyu.com/api/v1/live/{}'.format(i)
         game_data = requests.get(gamelink) # 频道在线主播信息
+        import pdb
+        pdb
         if game_data.status_code == 200 and game_data.json()['error'] == 0:
             game_data = game_data.json()['data']
         else:
             continue
+
         game_online = sum([i['online'] for i in game_data]) # 频道总在线人数
         games[i]['online'] = game_online
         # 这个数据直接放在redis里
 
         rooms_id = []
         for j in game_data:
+
             if j['online'] > max_online:
                 rooms_id.append(j['room_id'])
                 room_info[j['room_id']] = {
@@ -53,8 +55,8 @@ def get_room(games, max_online):
     # return games, room_info
 
 if __name__ == '__main__':
+    max_online = 50000
+
     games = get_games()
     for i in get_room(games, max_online):
         print(i)
-
-
