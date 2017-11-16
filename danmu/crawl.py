@@ -72,7 +72,7 @@ def parse(data):
             msg = json.loads((b'{"' + msg[:-2] + b'}').decode('utf8', 'ignore'))
         except JSONDecodeError:
             print(msg)
-        if msg.get('type', '') == 'chatmsg': # 弹幕信息 进入房间信息 礼物信息
+        if not isinstance(msg, bytes) and msg.get('type', '') == 'chatmsg': # 弹幕信息 进入房间信息 礼物信息
             # print(msg)
             # return msg.get('nn', ''), msg.get('rid', '')
             res = {
