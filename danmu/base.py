@@ -5,13 +5,22 @@
 import requests
 import redis
 import curio
-
+from datetime import datetime
 
 r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 rooms = {'max': [],'min': []}
 useronline = {}
 fans = {}
+
+def guess_online():
+    hour = int(str(datetime.now())[11:13])
+    if 0 < hour <= 10:
+        return 5000, 200
+    elif 10 < hour <= 16:
+        return 15000, 150
+    else:
+        return 40000, 90
 
 def get_games():
     """ 获取频道的信息"""
@@ -28,8 +37,6 @@ def get_room(games, max_online):
     for i in games:
         gamelink = 'http://api.douyu.com/api/v1/live/{}'.format(i)
         game_data = requests.get(gamelink) # 频道在线主播信息
-        import pdb
-        pdb
         if game_data.status_code == 200 and game_data.json()['error'] == 0:
             game_data = game_data.json()['data']
         else:
@@ -55,7 +62,7 @@ def get_room(games, max_online):
     # return games, room_info
 
 if __name__ == '__main__':
-    max_online = 50000
+    max_online = guess_online()
 
     games = get_games()
     for i in get_room(games, max_online):

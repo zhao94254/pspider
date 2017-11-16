@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # @Author  : pengyun
 
-from base import get_games, get_room
+from base import get_games, get_room, guess_online
 from struct import pack
 import re
 import json
@@ -13,8 +13,7 @@ import time
 from json import JSONDecodeError
 from restart import run_with_restart
 
-max_online = 50000
-max_room = 20
+max_online, max_room = guess_online()
 debug = False
 times = 0
 keeplive = time.time()
