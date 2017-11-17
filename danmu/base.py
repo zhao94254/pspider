@@ -48,7 +48,6 @@ def get_room(games, max_online):
 
         rooms_id = []
         for j in game_data:
-
             if j['online'] > max_online:
                 rooms_id.append(j['room_id'])
                 room_info[j['room_id']] = {
@@ -58,11 +57,15 @@ def get_room(games, max_online):
                     'image_link': j['avatar_mid'],
                     'games': i,
                 }
+        o_num = [g['online'] for g in game_data if g['online']>max_online]
+        if len(o_num) > 0:
+        #     print("online numbers", sum(o_num), "rooms", len(o_num))
+            r.set('online|{}'.format(i), (sum(o_num), len(o_num)))
         yield rooms_id
     # return games, room_info
 
 if __name__ == '__main__':
-    max_online = guess_online()
+    max_online, _ = guess_online()
 
     games = get_games()
     for i in get_room(games, max_online):
