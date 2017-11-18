@@ -101,10 +101,10 @@ async def get_danmu(addr, room_id):
             await connect.sendall(data)
         # save -->
         tmp.append(parse(recv_danmu))
-        if len(tmp) == 100:
-            await insert_danmu(tmp)
+        if len(tmp) >= 800:
+            indb = tmp[:]
             tmp = []
-            # save
+            await insert_danmu(indb)
 
 async def main(addr, room_ids):
     async with TaskGroup() as g:
