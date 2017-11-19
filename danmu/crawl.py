@@ -36,6 +36,7 @@ async def insert_danmu(data):
         collection.insert_many(data)
 
 
+
 def get_rooms():
     """ 获取主播的房间id"""
     games = get_games()
@@ -98,6 +99,7 @@ async def get_danmu(addr, room_id):
         if time.time() - keeplive > 25:
             data = push('type@=keeplive/tick@=%s/' % int(time.time()))
             keeplive = time.time()
+            print(connect)
             await connect.sendall(data)
         # save -->
         tmp.append(parse(recv_danmu))
