@@ -12,6 +12,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import time
 from json import JSONDecodeError
 from restart import run_with_restart
+import datetime
 
 
 def push(data):
@@ -38,7 +39,8 @@ def parse(data):
                 'nickname': msg.get('nn', ''),
                 'level': msg.get('level', '1'),
                 'danmu': msg.get('txt', ''),
-                'uid': msg.get('uid', '1')
+                'uid': msg.get('uid', '1'),
+                'time': datetime.datetime.now(),
             }
             return res
     else:

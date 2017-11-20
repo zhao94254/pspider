@@ -35,8 +35,6 @@ async def insert_danmu(data):
         data = [i for i in data if i]
         collection.insert_many(data)
 
-
-
 def get_rooms():
     """ 获取主播的房间id"""
     games = get_games()
