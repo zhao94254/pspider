@@ -12,7 +12,6 @@ import (
 const (
 	BufferSize  = 1024
 	ServerAddr  = "openbarrage.douyutv.com:8601"
-	//ServerAddr = "localhost:9999"
 	PostCode = 689
 	PullCode = 690
 	Roomid = 688
@@ -51,14 +50,14 @@ func ParseData(buffer []byte) map[string]interface{} {
 	items := strings.Split(s, "/")
 	for _, str := range items {
 		k := strings.SplitN(str, "@=", 2)
-		fmt.Println(len(k))
-		Parsed[k[0]] = k[1]
-
+		if len(k) >1{
+			Parsed[k[0]] = k[1]
+		}
 	}
 	return Parsed
 }
 
-func TestConn()  {
+func Connect()  {
 	buffer := make([]byte, BufferSize)
 	JoinData := JoinRoom("688")
 	JoinMsg := JoinMsg("688")
@@ -76,37 +75,18 @@ func TestConn()  {
 	for  {
 		_, err := conn.Read(buffer)
 		parsed := ParseData(buffer)
-		fmt.Println(parsed)
-		//fmt.Println(parsed["level"],parsed["nn"], parsed["txt"])
+		fmt.Println(parsed["level"],parsed["nn"], parsed["txt"])
 		if err != nil{
 			break
 		}
 	}
-
-
-
-
-	//conn.Close()
-	fmt.Println(string(buffer))
+	conn.Close()
 }
 
-func Connect()  {
-	conn, _ := net.Dial("tcp", "localhost:9999")
-	buffer := make([]byte, BufferSize)
-	//wbuff := new(bytes.Buffer)
-	//binary.Write(wbuff, binary.LittleEndian, []byte("test"))
-	wbuff := []byte("3030type@=loginreq/roomid@=688/")
-	fmt.Println(wbuff)
-	conn.Write(wbuff)
-	conn.Read(buffer)
-	fmt.Println(string(buffer))
-}
+
 
 func main()  {
-	//Connect()
-	//fmt.Println(PostData("test"))
-	TestConn()
-	//JoinRoom("688")
+	Connect()
 }
 
 
