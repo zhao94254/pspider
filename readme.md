@@ -13,3 +13,6 @@ danmu 使用协程 获取大量弹幕信息。
 第三，理解python中的GIL
 [GIL 理解](https://www.yunxcloud.cn/post/136)
 
+
+# 增加golang版本的。 go 是很适合这种应用的。 天生自带 m - n的gorotine
+
