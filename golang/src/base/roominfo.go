@@ -12,9 +12,9 @@ import (
 // 直接通过指针来传递一个数组，直接通过指针来改变。
 
 
-const maxOnline  = 50000
+const maxOnline  = 500000
 
-func Pindao()  {
+func Pindao() []string {
 	var dat map[string]interface{}
 	var res []string
 	p := &res
@@ -29,6 +29,7 @@ func Pindao()  {
 		fmt.Println(len(*p))
 	}
 	fmt.Println("result..", *p)
+	return *p
 }
 
 func Liveid(pindao float64, point *[]string)  {
