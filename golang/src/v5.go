@@ -1,13 +1,22 @@
 package main
 
-import "./base"
+import (
+	"./base"
+)
+
+func newSafe() *base.SafeMap {
+	sm := new(base.SafeMap)
+	sm.Map = make(map[string]int)
+	return sm
+}
 
 
 func test()  {
 	ch := make(chan string)
+	count := newSafe()
 	rooms := base.Pindao(10)
 	for _, i := range rooms{
-		go base.Connect(i)
+		go base.CountConnect(i, count)
 	}
 	for i:=1;i<len(rooms) ;i++  {
 		<-ch

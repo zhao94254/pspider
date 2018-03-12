@@ -12,9 +12,9 @@ import (
 // 直接通过指针来传递一个数组，直接通过指针来改变。
 
 
-const maxOnline  = 500000
+const maxOnline  = 300000
 
-func Pindao() []string {
+func Pindao(x int) []string {
 	var dat map[string]interface{}
 	var res []string
 	p := &res
@@ -22,11 +22,14 @@ func Pindao() []string {
 	b, _ := ioutil.ReadAll(resp.Body)
 	json.Unmarshal(b, &dat)
 	mapTmp := dat["data"].([]interface{})
-	for _, j :=  range mapTmp{
+	for i, j :=  range mapTmp{
+		i++
+		if i > x{
+			break
+		}
 		l := j.(map[string]interface{})
-		fmt.Println("频道名：", l["game_name"], l["cate_id"]) // 获得频道id
+		fmt.Println("频道名：", l["game_name"], l["cate_id"], "len", len(*p)) // 获得频道id
 		Liveid(l["cate_id"].(float64), p)
-		fmt.Println(len(*p))
 	}
 	fmt.Println("result..", *p)
 	return *p

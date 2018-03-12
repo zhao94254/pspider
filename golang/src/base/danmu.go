@@ -109,7 +109,31 @@ func Connect(roomid string)  {
 		if parsed["type"] == "chatmsg"{
 			fmt.Printf("user: %s  danmu: %s level: %s room: %s \n", parsed["nn"], parsed["txt"], parsed["level"], parsed["rid"])
 		}
+	}
+	conn.Close()
+}
 
+func CountConnect(roomid string, count *SafeMap)  {
+	conn := PreConn(roomid)
+	timestamp := time.Now().Unix()
+	for  {
+		parsed := ParseData(conn) // type: dgb - gift, chatmsg - danmu , uenter - enter
+		// nn - nickname  level  txt
+		if time.Now().Unix() - timestamp > 21{
+			timestamp = time.Now().Unix()
+			_, err := conn.Write(PostData(fmt.Sprintf("type@=keeplive/tick@=%s/", timestamp)))
+			if err != nil{
+				fmt.Println("心跳失败")
+			}
+		}
+		if parsed["type"] == "chatmsg"{
+			//fmt.Printf("user: %s  danmu: %s level: %s room: %s \n", parsed["nn"], parsed["txt"], parsed["level"], parsed["rid"])
+			key := fmt.Sprintf("%s", parsed["rid"])
+			count.writeMap(key)
+			if count.Map[key] > 100 && count.Map[key] % 100 == 1{
+				fmt.Println(count.Map)
+			}
+		}
 	}
 	conn.Close()
 }
