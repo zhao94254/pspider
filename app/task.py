@@ -25,7 +25,7 @@ class Task(object):
     @classmethod
     def ptask(cls, **kwargs):
         @cls.clstasks(**kwargs)
-        def _instance(self, **kwargs):
+        def _instance(**kwargs):
             cls(**kwargs).start()
         return _instance
 
