@@ -10,7 +10,7 @@ from spider.model import BaseModel
 class LagouSpider(Pspider):
 
     def task(self):
-        for i in range(1, 30):
+        for i in range(1, 5):
             yield "https://www.lagou.com/zhaopin/Python/{}".format(i)
 
     def req_resp(self):
