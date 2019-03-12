@@ -12,7 +12,7 @@ class Task(object):
 
     app = None
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         pass
 
     def set_config(self):

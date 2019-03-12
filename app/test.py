@@ -7,11 +7,11 @@
 
 from app.task import Task
 
-class App(object):
+class FakeApp(object):
 
     @staticmethod
     def task(bind=True, **kwargs):
-        def skr(func, **kwargs):
+        def skr(func, **kws):
             print('start',kwargs)
             func(**kwargs)
             print('end')
@@ -25,5 +25,5 @@ class TestTask(Task):
 
 
 if __name__ == '__main__':
-    TestTask.app = App()
+    TestTask.app = FakeApp()
     TestTask().ptask(skr='skr')
