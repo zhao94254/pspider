@@ -6,6 +6,7 @@
 
 
 from app.task import Task
+from app.celery import capp
 
 class FakeApp(object):
     """
@@ -42,6 +43,7 @@ def testskr1(**kwargs):
 if __name__ == '__main__':
     # TestTask.app = FakeApp()
     # TestTask().ptask(skr='skr')
-    print(TestTask())
+    s = TestTask()
+    s.send('skr')
 
     print(testskr1(s=2))

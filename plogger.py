@@ -11,7 +11,7 @@ import inspect
 from datetime import datetime
 from collections import defaultdict
 import os
-from config import LOGPATH as log_path
+from conf.config import LOGPATH as log_path
 
 class NamedRotatingFileHandler(RotatingFileHandler):
     def __init__(self, filename):

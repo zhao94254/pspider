@@ -26,7 +26,8 @@ def init_sdks():
     queues = []
     for s in _all_sdk_:
         s.app = capp
-        name = str(s)
+        name = s.__str__()
+        log.info("load %s", name)
         tasks.__dict__[name] =  s.ptask()
         queues.append(Queue(name, exchange=Exchange(name, type='direct'), routing_key=name))
 

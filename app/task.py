@@ -4,6 +4,9 @@
 # @Author  : zpy
 # @Software: PyCharm
 
+from plogger import get_logger
+
+log = get_logger('core_task')
 
 class Task(object):
     """
@@ -29,6 +32,12 @@ class Task(object):
             cls(**kwargs).start()
         return _instance
 
+    @classmethod
+    def send(cls, data):
+        name = cls.__str__()
+        log.info("%s send task", name)
+        return cls.app.send_task(name, args=(data,), queue=name, routing_key=name)
+
     def start(self):
         pass
 
@@ -37,4 +46,4 @@ class Task(object):
 
     @classmethod
     def __str__(cls):
-        return cls.__module__ + cls.__name__
+        return cls.__name__

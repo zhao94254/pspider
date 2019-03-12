@@ -6,4 +6,6 @@
 
 # sdk 要先引入到这里
 
-_all_sdk_ = []
+from app.test import TestTask
+
+_all_sdk_ = [TestTask]
