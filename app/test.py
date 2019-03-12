@@ -12,18 +12,34 @@ class FakeApp(object):
     @staticmethod
     def task(bind=True, **kwargs):
         def skr(func, **kws):
-            print('start',kwargs)
-            func(**kwargs)
-            print('end')
-            return
+            def inner(**kws):
+                print('start', kwargs)
+                res = func(**kws)
+                print('end')
+                return res
+            return inner
         return skr
 
 class TestTask(Task):
 
-    def start(self):
-        print('skr skr')
+    def start(self, **kwargs):
+        print('instance start', kwargs)
+        return 'test'
+
+
+app = FakeApp()
+
+@app.task(bind=True, skr='skr')
+def testskr1(**kwargs):
+    print("--- testskr")
+    _test = TestTask()
+    return _test.start(**kwargs)
+
 
 
 if __name__ == '__main__':
-    TestTask.app = FakeApp()
-    TestTask().ptask(skr='skr')
+    # TestTask.app = FakeApp()
+    # TestTask().ptask(skr='skr')
+
+
+    print(testskr1(s=2))
