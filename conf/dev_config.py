@@ -8,3 +8,5 @@ import os
 
 LOGPATH = '/Users/mioji/Desktop/newpy/log' # os.environ.get('pspider_log')
 PROXY = os.environ.get('psoider_proxy')
+
+celery_broker = 'mongodb://127.0.0.1:27017/dev_broker'
