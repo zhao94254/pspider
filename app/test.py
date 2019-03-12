@@ -8,7 +8,9 @@
 from app.task import Task
 
 class FakeApp(object):
-
+    """
+    模拟celery的task来用
+    """
     @staticmethod
     def task(bind=True, **kwargs):
         def skr(func, **kws):
@@ -29,7 +31,7 @@ class TestTask(Task):
 
 app = FakeApp()
 
-@app.task(bind=True, skr='skr')
+@app.task(bind=True, skr='skr') # 使用celery文档提供的常规的方式
 def testskr1(**kwargs):
     print("--- testskr")
     _test = TestTask()
