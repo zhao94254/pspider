@@ -42,6 +42,6 @@ def testskr1(**kwargs):
 if __name__ == '__main__':
     # TestTask.app = FakeApp()
     # TestTask().ptask(skr='skr')
-
+    print(TestTask())
 
     print(testskr1(s=2))
