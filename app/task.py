@@ -34,3 +34,7 @@ class Task(object):
 
     def execute(self):
         pass
+
+    @classmethod
+    def __str__(cls):
+        return cls.__module__ + cls.__name__
