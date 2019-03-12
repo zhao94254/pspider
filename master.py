@@ -5,3 +5,10 @@
 # @Software: PyCharm
 
 # 分发任务，控制slave
+
+def add_slave():
+    pass
+
+def all_slaves():
+    pass
+
