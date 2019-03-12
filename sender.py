@@ -11,7 +11,7 @@ from app.sdks import _all_sdk_
 
 
 if __name__ == '__main__':
-
+    # for i in range(10):
     test = _all_sdk_[0]
     print(test.app)
     test.send('skr')
