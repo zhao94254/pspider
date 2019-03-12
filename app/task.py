@@ -16,19 +16,19 @@ class Task(object):
     app = None
 
     def __init__(self, **kwargs):
-        pass
+        log.info(('init',kwargs))
 
     def set_config(self):
         pass
 
     @classmethod
-    def clstasks(cls, **kwargs):
-        return cls.app.task(bind=True, **kwargs)
+    def clstasks(cls, name, **kwargs):
+        return cls.app.task(bind=True,name=name, **kwargs)
 
     @classmethod
-    def ptask(cls, **kwargs):
-        @cls.clstasks(**kwargs)
-        def _instance(**kwargs):
+    def ptask(cls, name, **kwargs):
+        @cls.clstasks(name=name, **kwargs)
+        def _instance(*args, **kwargs):
             cls(**kwargs).start()
         return _instance
 
