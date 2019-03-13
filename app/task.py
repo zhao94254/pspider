@@ -15,8 +15,9 @@ class Task(object):
 
     app = None
 
-    def __init__(self, **kwargs):
-        log.info(('init',kwargs))
+    def __init__(self,**kwargs):
+        self.tasks = kwargs['tasks']
+        log.info(('init', kwargs))
 
     def set_config(self):
         pass
@@ -33,10 +34,10 @@ class Task(object):
         return _instance
 
     @classmethod
-    def send(cls, data):
+    def send(cls, tasks):
         name = cls.__str__()
         log.info("%s send task", name)
-        return cls.app.send_task(name, args=(data,), queue=name, routing_key=name)
+        return cls.app.send_task(name, kwargs={'tasks':tasks}, queue=name, routing_key=name)
 
     def start(self):
         pass
