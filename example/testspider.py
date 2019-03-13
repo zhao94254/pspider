@@ -10,8 +10,7 @@ from spider.model import BaseModel
 class LagouSpider(Pspider):
 
     def task(self):
-        for i in range(1, 5):
-            yield "https://www.lagou.com/zhaopin/Python/{}".format(i)
+        return self.tasks
 
     def req_resp(self):
         self.jobmodel = BaseModel(
@@ -65,8 +64,9 @@ if __name__ == '__main__':
     # sp = SiteSpider()
     # sp.start()
     sp = LagouSpider()
+    sp.tasks = ['https://www.lagou.com/zhaopin/Python/1']
     sp.start()
 
     for s in sp.result['job'].export_sql('test.test'):
         print(s)
-    sp.result['job'].export_csvfile('/Users/mioji/Desktop/newpy/pspider/example/lagoutest.csv')
+    # sp.result['job'].export_csvfile('/Users/mioji/Desktop/newpy/pspider/example/lagoutest.csv')
