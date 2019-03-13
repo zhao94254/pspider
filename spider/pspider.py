@@ -6,7 +6,7 @@
 
 import abc
 from abc import ABCMeta
-from spider.plogger import get_logger, func_time_logger
+from plogger import get_logger, func_time_logger
 from exceptions import SpiderException
 from requests.exceptions import Timeout, ConnectionError
 from collections import deque
@@ -23,6 +23,7 @@ class Pspider(metaclass=ABCMeta):
     def __init__(self):
         self.result = {}
         self.session = None
+        self.tasks = []
 
     @abc.abstractmethod
     def task(self):
