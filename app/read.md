@@ -32,3 +32,9 @@ def test():
 重新启动服务。
 
 而新方式会把celery的绑定封装在框架内部，参数也可以进行配置化，并提供接口很简单的进行修改
+
+**启动**
+
+celery -A app worker
+
+sender.py 中发任务
