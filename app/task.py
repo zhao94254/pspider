@@ -47,4 +47,6 @@ class Task(object):
 
     @classmethod
     def __str__(cls):
-        return cls.__name__
+        return "{}_{}".format(cls.__module__, cls.__name__).replace('.', '_')
+
+    __repr__ = __str__

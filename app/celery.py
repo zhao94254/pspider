@@ -21,7 +21,7 @@ capp = Celery(
 capp.conf.update(CELERY_REJECT_ON_WORKER_LOST=True, CELERY_ACKS_LATE=True)
 
 def init_sdks():
-    from app.sdks import _all_sdk_
+    from app.register import _all_sdk_
     from app import tasks
     queues = []
     for s in _all_sdk_:

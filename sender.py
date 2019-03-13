@@ -6,7 +6,7 @@
 
 from app.celery import capp
 from app.task import Task
-from app.sdks import _all_sdk_
+from app.register import _all_sdk_
 
 
 
