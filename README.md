@@ -6,7 +6,9 @@
 一个简单的爬虫框架
 
 **app**
-celery要用到这个，放celery的各种配置
+celery要用到这个，放celery的各种配置，以及对celery的封装
+
+[核心封装&说明](https://github.com/zhao94254/pspider/blob/master/app/read.md)
 
 **sdks**
 放集成进平台的爬虫sdk
@@ -21,3 +23,4 @@ celery要用到这个，放celery的各种配置
 
 提供接口将结果进行统一管理
 任务并发依靠框架，用的时候只需配置即可
+
