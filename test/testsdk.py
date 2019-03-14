@@ -21,3 +21,4 @@ class LagouTask(Task):
         spider.start()
         for d in spider.result['job'].export_sql('test.test'):
             print(d)
+        self.save(list(spider.result['job'].export_dict()))
