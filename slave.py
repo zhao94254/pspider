@@ -23,7 +23,7 @@ def register_slave():
     将 slave 注册到系统
     :return:
     """
-    requests.get('master..')
+    requests.get('http://127.0.0.1:5000')
 
 def start_task():
     """
