@@ -6,6 +6,7 @@
 
 from plogger import get_logger
 
+
 log = get_logger('core_task')
 
 class Task(object):
@@ -17,6 +18,7 @@ class Task(object):
 
     def __init__(self,**kwargs):
         self.tasks = kwargs['tasks']
+        self.code = -1
         log.info(('init', kwargs))
 
     def set_config(self):
@@ -34,16 +36,24 @@ class Task(object):
         return _instance
 
     @classmethod
-    def send(cls, tasks):
+    def send(cls, tasks: list):
         name = cls.__str__()
         log.info("%s send task", name)
         return cls.app.send_task(name, kwargs={'tasks':tasks}, queue=name, routing_key=name)
 
     def start(self):
-        pass
+
+        self.execute()
 
     def execute(self):
         pass
+
+    def log_task(self):
+        """
+        记录任务执行情况
+        :return:
+        """
+        log.info(str(self))
 
     @classmethod
     def __str__(cls):
