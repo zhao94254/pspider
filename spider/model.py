@@ -47,6 +47,10 @@ class BaseModel:
     def check(self):
         self._check_mds()
 
+    def export_dict(self):
+        for data in self.buffer:
+            yield data
+
     def export_sql(self, table):
         """
         导出sql

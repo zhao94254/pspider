@@ -43,5 +43,5 @@ if __name__ == '__main__':
     sp.tasks = ['https://www.lagou.com/zhaopin/Python/1']
     sp.start()
 
-    for s in sp.result['job'].export_sql('test.test'):
+    for s in sp.result['job'].export_dict():
         print(s)
