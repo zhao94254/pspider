@@ -7,6 +7,9 @@
 # todo 完善
 
 from conf.config import mongo_storage
+from plogger import get_logger
+
+log = get_logger("storage")
 
 class BaseBackend(object):
 
@@ -17,4 +20,5 @@ class BaseBackend(object):
 class MongoBackend(BaseBackend):
 
     def save(self, data):
+        log.info("{} {} insert {}".format(str(self.app), self.app.group, len(data)))
         mongo_storage[str(self.app)][self.app.group].insert_many(data)

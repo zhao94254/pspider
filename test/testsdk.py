@@ -22,3 +22,7 @@ class LagouTask(Task):
         for d in spider.result['job'].export_sql('test.test'):
             print(d)
         self.save(list(spider.result['job'].export_dict()))
+
+if __name__ == '__main__':
+    l = LagouTask(tasks=['https://www.lagou.com/zhaopin/Python/12'], group='20190314')
+    l.start()
