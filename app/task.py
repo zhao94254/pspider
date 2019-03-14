@@ -5,7 +5,7 @@
 # @Software: PyCharm
 
 from plogger import get_logger
-
+from conf.config import redis_client
 
 log = get_logger('core_task')
 
@@ -42,8 +42,9 @@ class Task(object):
         return cls.app.send_task(name, kwargs={'tasks':tasks}, queue=name, routing_key=name)
 
     def start(self):
-
+        self.log_task()
         self.execute()
+        self.log_task()
 
     def execute(self):
         pass
@@ -53,7 +54,8 @@ class Task(object):
         记录任务执行情况
         :return:
         """
-        log.info(str(self))
+        redis_client.incr("{}|{}".format(str(self), self.code), 1)
+        log.info("{}|{}".format(str(self), self.code))
 
     @classmethod
     def __str__(cls):
