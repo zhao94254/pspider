@@ -38,10 +38,10 @@ class Task(object):
         return _instance
 
     @classmethod
-    def send(cls, tasks: list):
+    def send(cls, tasks: list, group: str):
         name = cls.__str__()
         log.info("%s send task", name)
-        return cls.app.send_task(name, kwargs={'tasks':tasks}, queue=name, routing_key=name)
+        return cls.app.send_task(name, kwargs={'tasks':tasks, 'group':group}, queue=name, routing_key=name)
 
     def start(self):
         self.log_task()
