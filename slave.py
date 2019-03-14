@@ -6,6 +6,8 @@
 
 # 用来接收master分发的任务执行
 
+# todo 完善基本功能
+# todo 添加docker
 
 def register_slave():
     """

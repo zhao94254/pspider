@@ -21,3 +21,6 @@ class LagouTask(Task):
         spider.start()
         for d in spider.result['job'].export_sql('test.test'):
             print(d)
+
+if __name__ == '__main__':
+    TestTask(tasks=[]).log_task()
