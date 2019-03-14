@@ -6,6 +6,7 @@
 
 from plogger import get_logger
 from conf.config import redis_client
+from backend.storage import MongoBackend
 
 log = get_logger('core_task')
 
@@ -18,6 +19,7 @@ class Task(object):
 
     def __init__(self,**kwargs): # todo 接口设计
         self.tasks = kwargs['tasks']
+        self.group = kwargs['group']
         self.code = -1
         log.info(('init', kwargs))
 
@@ -48,6 +50,9 @@ class Task(object):
 
     def execute(self):
         pass
+
+    def save(self, data):
+        return MongoBackend(self).save(data)
 
     def log_task(self):
         """
