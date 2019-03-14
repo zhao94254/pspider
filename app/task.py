@@ -16,7 +16,7 @@ class Task(object):
 
     app = None
 
-    def __init__(self,**kwargs):
+    def __init__(self,**kwargs): # todo 接口设计
         self.tasks = kwargs['tasks']
         self.code = -1
         log.info(('init', kwargs))
