@@ -10,6 +10,8 @@ from backend.storage import MongoBackend
 
 log = get_logger('core_task')
 
+# 1个sdk -> n个 source -> n个group
+
 class Task(object):
     """
     在 celery 上封装一层， 任务的调度，执行，分发都会依靠这里来做
@@ -20,6 +22,7 @@ class Task(object):
     def __init__(self,**kwargs): # todo 接口设计
         self.tasks = kwargs['tasks']
         self.group = kwargs['group']
+        self.source = kwargs['source']
         self.code = -1
         log.info(('init', kwargs))
 
