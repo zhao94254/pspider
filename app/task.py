@@ -12,6 +12,8 @@ log = get_logger('core_task')
 
 # 1个sdk -> n个 source -> n个group
 
+# todo config 子task粒度的（celery配置） 具体一批任务粒度的（结果配置、备份配置等）
+
 class Task(object):
     """
     在 celery 上封装一层， 任务的调度，执行，分发都会依靠这里来做
