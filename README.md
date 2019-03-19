@@ -24,3 +24,6 @@ celery要用到这个，放celery的各种配置，以及对celery的封装
 提供接口将结果进行统一管理
 任务并发依靠框架，用的时候只需配置即可
 
+整体思路
+master 会来管理控制slave的执行，调度。主要依靠supervisor+一个http服务实现
+具体的每个slave执行相应的celery进程，爬虫通过sdk集成到服务中进行统一管理
