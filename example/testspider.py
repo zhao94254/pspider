@@ -41,7 +41,7 @@ class LagouSpider(Pspider):
 class SiteSpider(Pspider):
 
     def task(self):
-        return "https://www.google.com"
+        return "https://www.zhihu.com/people/pyy-69-54/following"
 
     def req_resp(self):
 
@@ -53,6 +53,7 @@ class SiteSpider(Pspider):
                 },
                 "response":{
                     "handler": self.parse_data,
+                    'result_tag': 'test'
                 }}
         yield first_page
 
@@ -61,12 +62,15 @@ class SiteSpider(Pspider):
         return 'skr'
 
 if __name__ == '__main__':
+    t = SiteSpider()
+    t.start()
+
     # sp = SiteSpider()
     # sp.start()
-    sp = LagouSpider()
-    sp.tasks = ['https://www.lagou.com/zhaopin/Python/1']
-    sp.start()
-
-    for s in sp.result['job'].export_sql('test.test'):
-        print(s)
+    # sp = LagouSpider()
+    # sp.tasks = ['https://www.lagou.com/zhaopin/Python/1']
+    # sp.start()
+    #
+    # for s in sp.result['job'].export_sql('test.test'):
+    #     print(s)
     # sp.result['job'].export_csvfile('/Users/mioji/Desktop/newpy/pspider/example/lagoutest.csv')

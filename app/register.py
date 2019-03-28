@@ -6,6 +6,6 @@
 
 # sdk 要先引入到这里
 
-from sdks.test import TestTask, LagouTask
+from sdks.test import TestTask, LagouTask, BihuTask
 
-_all_sdk_ = [TestTask, LagouTask]
+_all_sdk_ = [TestTask, LagouTask, BihuTask]

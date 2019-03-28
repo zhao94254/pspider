@@ -28,7 +28,7 @@ def init_sdks():
         s.app = capp
         name = s.__str__()
         log.info("load %s", name)
-        tasks.__dict__[name] =  s.ptask(name)
+        tasks.__dict__[name] =  s.ptask(name, rate_limit='10/m')
         queues.append(Queue(name, exchange=Exchange(name, type='direct'), routing_key=name))
 
     capp.conf.update(
