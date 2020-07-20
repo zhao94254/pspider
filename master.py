@@ -4,24 +4,24 @@
 # @Author  : zpy
 # @Software: PyCharm
 
-# 分发任务，控制slave
+# 分发任务，控制subordinate
 
 from flask import Flask, request
 from conf.config import redis_client
 
 app = Flask(__name__)
 
-@app.route('/addslave')
-def add_slave():
-    redis_client.sadd('master|allslaves', request.remote_addr)
+@app.route('/addsubordinate')
+def add_subordinate():
+    redis_client.sadd('main|allsubordinates', request.remote_addr)
     return 'ok'
 
-@app.route('/allslaves')
-def all_slaves():
-    res = redis_client.smembers('master|allslaves')
-    slaves = list(map(lambda x:x.split('|')[1], res))
-    slaves.sort()
-    return slaves
+@app.route('/allsubordinates')
+def all_subordinates():
+    res = redis_client.smembers('main|allsubordinates')
+    subordinates = list(map(lambda x:x.split('|')[1], res))
+    subordinates.sort()
+    return subordinates
 
 
 if __name__ == '__main__':
