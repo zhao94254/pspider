@@ -4,12 +4,12 @@
 # @Author  : zpy
 # @Software: PyCharm
 
-# 用来接收master分发的任务执行
+# 用来接收main分发的任务执行
 # python3.7 安装supervisor
 # pip install git+https://github.com/Supervisor/supervisor.git
 
 base_supconf = """
-; slave config
+; subordinate config
 
 [unix_http_server]
 file=/Users/mioji/suptest/supervisor.sock   ; the path to the socket file
@@ -34,10 +34,10 @@ supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
 [supervisorctl]
 serverurl=unix:///Users/mioji/suptest/supervisor.sock ; use a unix:// URL  for a unix socket
 serverurl=http://127.0.0.1:9001 ; use an http:// url to specify an inet socket
-; slave
-[program:slave]
+; subordinate
+[program:subordinate]
 directory=/Users/mioji/Desktop/newpy/github/pspider
-command=/Users/mioji/skrskr/bin/python  slave.py
+command=/Users/mioji/skrskr/bin/python  subordinate.py
 stdout_logfile=/Users/mioji/suptest/%(program_name)s_out.log
 stdout_logfile_maxbytes=512MB
 stdout_logfile_backups=4
@@ -91,9 +91,9 @@ def update_conf(proglst):
         for conf in build_conf(proglst):
             f.write(conf)
 
-def register_slave():
+def register_subordinate():
     """
-    将 slave 注册到系统
+    将 subordinate 注册到系统
     :return:
     """
     requests.get('http://127.0.0.1:5000')
@@ -102,7 +102,7 @@ def register_slave():
 def start_task():
     """
     启动一批任务的进程
-    master 请求此接口，slave将配置文件构建好，调用supervisor的rpc 将进程启动
+    main 请求此接口，subordinate将配置文件构建好，调用supervisor的rpc 将进程启动
     :return:
     """
     proglst = json.loads(request.form['proglst'])
@@ -120,8 +120,8 @@ def stop_task():
     pass
 
 if __name__ == '__main__':
-    # test slave
+    # test subordinate
     # requests.post('http://127.0.0.1:5001/', data={'proglst': '[{"directory": "/Users/mioji/Desktop/newpy/github/pspider", "command": "/Users/mioji/skrskr/bin/celery -A app worker", "program": "test"}]'
     # })
-    register_slave()
+    register_subordinate()
     app.run(port=5001, debug=True)
