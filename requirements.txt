@@ -36,6 +36,6 @@ tqdm==4.31.1
 urllib3==1.24.1
 vine==1.2.0
 w3lib==1.20.0
-websockets==7.0
+websockets==9.1
 Werkzeug==0.14.1
 xmlrpc2==0.3.1
