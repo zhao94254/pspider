@@ -3,7 +3,7 @@ appdirs==1.4.3
 beautifulsoup4==4.7.1
 billiard==3.5.0.5
 bs4==0.0.1
-celery==4.2.1
+celery==5.2.2
 certifi==2019.3.9
 chardet==3.0.4
 Click==7.0
